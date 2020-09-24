@@ -152,7 +152,7 @@ import { mapGetters } from 'vuex'
                 this.role_id = id;
                 this.dialog = true;
             },
-            closeDialog(id){
+            closeDialog(){
                 this.role_id ='';
                 this.dialog = false;
             }

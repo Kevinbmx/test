@@ -33,10 +33,6 @@ const getters = {
         }
         return subtotal
     },
-  
-    getPosition(state){
-
-    }
 }
 
 const mutations = {
@@ -223,25 +219,17 @@ const actions = {
         })
     },
     getDirectionsByUserId(context){
-        return new Promise((resolve, reject) => {
-            this.$myApi.get(directionUrl)
-            .then(response =>{
-                if(response.data.direction != null){
-                    context.commit('getDirectionsByUserId',response.data.direction)
-                }
-            })
-        })
-        .catch(error =>{
-            reject(error)
+        this.$myApi.get(directionUrl)
+        .then(response =>{
+            if(response.data.direction != null){
+                context.commit('getDirectionsByUserId',response.data.direction)
+            }
         })
     },
     selectDirection(context,direction_id){
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             context.commit('selectDirection',direction_id)
             resolve(true)
-        })
-        .catch(error =>{
-            reject(error)
         })
     },
     insertDirection({ state, commit }){
@@ -271,7 +259,7 @@ const actions = {
             })
         })
     },
-    updateProductAccordingPedido({ state, commit }){
+    updateProductAccordingPedido({ state }){
         return new Promise((resolve, reject) => {
             this.$myApi.post(updateProductAccordingPedidoUrl, state.carrito)
             .then(response =>{
@@ -294,12 +282,6 @@ const actions = {
     change_user_id_pedido(context, estado){
         context.commit('change_user_id_pedido',estado)
     },
-    //----------------si esta sin loguear pero ingreso items al carrito------------
-    verifyIfUserHaveAPedido(context,estado){
-
-    }
-    
-    
 }
 
 

@@ -161,7 +161,7 @@ const actions = {
     .then(response => {
       context.commit('addCategorySubmit', response.data.CategoryTree)
     })
-    .catch(error => {
+    .catch(() => {
     // console.log(error)
     })
   },
@@ -181,7 +181,7 @@ const actions = {
         // console.log(response)
         context.commit('addParentSubmit',response.data.CategoryTree)
       })
-      .catch(error => {
+      .catch(() => {
       // console.log(error)
       })
   },
@@ -199,7 +199,7 @@ const actions = {
         // console.log(response)
         context.commit('addChildrenSubmit',response.data.CategoryTree)
       })
-      .catch(error => {
+      .catch(() => {
       // console.log(error)
       })
   },
@@ -210,7 +210,7 @@ const actions = {
       .then(response => {
         context.commit('deleteCategorySubmit', response.data.CategoryTree)
       })
-      .catch(error => {
+      .catch(() => {
       // console.log(error)
       })
   },
@@ -238,7 +238,7 @@ const actions = {
     // console.log(response.data)
       context.commit('getImageCategory',obj)
     })
-    .catch(error => {
+    .catch(() => {
     // console.log(error)
     })
   },
@@ -249,27 +249,23 @@ const actions = {
     if(state.image.state=='new' || state.image.state=='update'){
       if(state.image.state=='update'){
         firebase.auth().signInWithEmailAndPassword(state.userFirebase,state.passFirebase)
-      .then(user => {
+      .then(() => {
         var storage = firebase.storage();
         var storageRef = storage.ref();
         var desertRef = storageRef.child('/category/'+state.image.oldPathName);
         desertRef.delete().then(function() {
           // console.log('se elimino correctamente de firebase su imagen')
-        }).catch(function(error) {
+        }).catch(()=> {
         // Uh-oh, an error occurred!
         });
       })
     }
       context.dispatch('uploadImageCategoryFirebase').then((response) => {
         if(response){
-          
           this.$myApi.post(categoryUrl +'/'+state.image.categoryId,{
             name: state.image.name,
             path:state.image.path,
             pathName:state.image.pathName
-          }).then(response=>{
-          // console.log('inserto la imagen de la categoria')
-            // context.commit('createImageCategory')
           })
         }
       })
@@ -279,64 +275,64 @@ const actions = {
 
   },
   uploadImageCategoryFirebase(context){
-    return new Promise((resolve, reject) => {
-            const element = state.image;
-            const uuid = element.uuid ;
-            // console.log('element', element)
-            // console.log('uuid', uuid)
-            // console.log(state.files[index])
+    return new Promise((resolve) => {
+      const element = state.image;
+      const uuid = element.uuid ;
+      // console.log('element', element)
+      // console.log('uuid', uuid)
+      // console.log(state.files[index])
 
-            firebase.auth().signInWithEmailAndPassword(state.userFirebase,state.passFirebase)
-            .then(user => {
-            var storageRef =  firebase.storage().ref();
-                var metadata = {
-                contentType: element.file[0].type
-                }
-                const filename = element.file[0].name
-                const ext = filename.slice(filename.lastIndexOf('.'))
-                var uploadTask = storageRef.child('category/' + uuid + ext).put(element.file[0], metadata);
+      firebase.auth().signInWithEmailAndPassword(state.userFirebase,state.passFirebase)
+      .then(() => {
+      var storageRef =  firebase.storage().ref();
+          var metadata = {
+          contentType: element.file[0].type
+          }
+          const filename = element.file[0].name
+          const ext = filename.slice(filename.lastIndexOf('.'))
+          var uploadTask = storageRef.child('category/' + uuid + ext).put(element.file[0], metadata);
 
-                uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, 
-                function(snapshot) {
-                    var progress =  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                  // console.log('Upload is ' + progress + '% done');
-                    switch (snapshot.state) {
-                    case firebase.storage.TaskState.PAUSED: 
-                      // console.log('Upload is paused');
-                        break;
-                    case firebase.storage.TaskState.RUNNING: 
-                      // console.log('Upload is running');
-                        break;
-                    }
-                }, function(error) {
-                switch (error.code) {
-                    case 'storage/unauthorized':
-                    // User doesn't have permission to access the object
-                    break;
+          uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, 
+          function(snapshot) {
+              // var progress =  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            // console.log('Upload is ' + progress + '% done');
+              switch (snapshot.state) {
+              case firebase.storage.TaskState.PAUSED: 
+                // console.log('Upload is paused');
+                  break;
+              case firebase.storage.TaskState.RUNNING: 
+                // console.log('Upload is running');
+                  break;
+              }
+          }, function(error) {
+          switch (error.code) {
+              case 'storage/unauthorized':
+              // User doesn't have permission to access the object
+              break;
 
-                    case 'storage/canceled':
-                    // User canceled the upload
-                    break;
+              case 'storage/canceled':
+              // User canceled the upload
+              break;
 
-                    case 'storage/unknown':
-                    // Unknown error occurred, inspect error.serverResponse
-                    break;
-                }
-                }, function complete () {
-                // Upload completed successfully, now we can get the download URL
-                    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-                        let objectFile={
-                            name: uuid + ext,
-                            urlFirebase:downloadURL
-                        }
-                        // //   console.log('tama;o Imagen', state.maxUploadImage-1)
-                        
-                        context.commit('uploadImageFirebase',objectFile)
-                      // console.log('File available at', downloadURL);
-                        resolve(true)
-                    });
-                })
-            })
+              case 'storage/unknown':
+              // Unknown error occurred, inspect error.serverResponse
+              break;
+          }
+          }, function complete () {
+          // Upload completed successfully, now we can get the download URL
+              uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                  let objectFile={
+                      name: uuid + ext,
+                      urlFirebase:downloadURL
+                  }
+                  // //   console.log('tama;o Imagen', state.maxUploadImage-1)
+                  
+                  context.commit('uploadImageFirebase',objectFile)
+                // console.log('File available at', downloadURL);
+                  resolve(true)
+              });
+          })
+      })
     })
   },
 }

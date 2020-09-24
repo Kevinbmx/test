@@ -1,5 +1,4 @@
 const Menu =  [
-  { header: 'Inventario' },
   {
     title: 'Seguridad',
     group: 'inventario',

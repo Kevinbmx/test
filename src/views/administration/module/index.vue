@@ -148,7 +148,7 @@ import { mapGetters } from 'vuex'
                 this.module_id = id;
                 this.dialog = true;
             },
-            closeDialog(id){
+            closeDialog(){
                 this.module_id ='';
                 this.dialog = false;
             }

@@ -96,7 +96,7 @@ export default {
             }else{
                 this.updateProductAndPedido()
             }
-            Swal.fire({
+            this.Swal.fire({
                 text: 'se ha confirmado tu pedido',
                 type: 'success',
             })

@@ -50,41 +50,40 @@
 </template>
 <script>
 import {rolePermissionUrl} from '../../../packages/config'
-import { mapGetters } from 'vuex'
-    export default {
-        name: 'RolePermissionIndex',
-        data () {
-        return {
-            search: '',
-            headers: [
-                {
-                text: 'nombre de modulo',
-                align: 'left',
-                sortable: false,
-                value: 'name'
-                },
-                { text: 'Cantidad de permisos', value: 'name', sortable: false },
-                { text: 'Actions', value: 'name', sortable: false }
-            ],
-            rolePermission:[],
-            module_id:'',
-            dialog:false
-            }
-        },
-        created(){
-            this.getAllRolePermission()
-        },
-        methods: {
-            getAllRolePermission(){
-                this.$myApi.get(rolePermissionUrl)
-                .then(response => {
-                    if(response.data.hasPermission){
-                        this.rolePermission= response.data.rolePermission.data
-                    }else{
-                        this.$router.push({ name: 'withoutAccess' })
-                    }
-                });
+export default {
+    name: 'RolePermissionIndex',
+    data () {
+    return {
+        search: '',
+        headers: [
+            {
+            text: 'nombre de modulo',
+            align: 'left',
+            sortable: false,
+            value: 'name'
             },
+            { text: 'Cantidad de permisos', value: 'name', sortable: false },
+            { text: 'Actions', value: 'name', sortable: false }
+        ],
+        rolePermission:[],
+        module_id:'',
+        dialog:false
         }
+    },
+    created(){
+        this.getAllRolePermission()
+    },
+    methods: {
+        getAllRolePermission(){
+            this.$myApi.get(rolePermissionUrl)
+            .then(response => {
+                if(response.data.hasPermission){
+                    this.rolePermission= response.data.rolePermission.data
+                }else{
+                    this.$router.push({ name: 'withoutAccess' })
+                }
+            });
+        },
     }
+}
 </script>

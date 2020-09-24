@@ -45,8 +45,6 @@
               <!-- {{product}} -->
               <v-hover>
                 <v-card
-                slot-scope="{ hover }"
-                :class="`elevation-${hover ? 12 : 2}`"
                 class="mx-auto eliminar-shadow"
                 >
                   <router-link :to="{ name: 'productDetail',params: { id: product.id} }" >
@@ -94,7 +92,7 @@ export default {
       }
     },
     watch: { 
-      $route (to, from) {
+      $route () {
         this.initializeData()
         this.haveQquery(this.haveQquerydata,this.qQuery,this.idQuery)
       }

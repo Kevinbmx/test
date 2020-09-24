@@ -140,7 +140,7 @@ export default {
         }
     },
     watch: { 
-      $route (to, from) {
+      $route () {
         this.initializeData()
         this.getTusPedidos()
       }
@@ -190,7 +190,7 @@ export default {
             this.pedidoId = pedId
             this.dialog = true
         },
-        closeDialog(pedId){
+        closeDialog(){
             this.pedidoId = null
             this.dialog = false
             this.motivoAnulacion=""

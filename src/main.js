@@ -1,12 +1,11 @@
 import Vue from "vue";
-import VueRouter from 'vue-router'
-// import "./plugins/vuetify"
-import vuetify from '@/plugins/vuetify' // path to vuetify export
 import App from "./App.vue";
+import VueRouter from 'vue-router'
+import vuetify from '@/plugins/vuetify' // path to vuetify export
 import routes from './routes'
 import store from './store/store'
-// import VeeValidate from "vee-validate";
-import * as VeeValidate from 'vee-validate';
+import VeeValidate from "vee-validate";
+// import * as VeeValidate from 'vee-validate';
 // import * as firebase from 'firebase'
 import * as firebase from "firebase/app";
 // import VueAwesomeSwiper from 'vue-awesome-swiper'
@@ -15,6 +14,10 @@ import "./filters/filters.js";
 import * as VueGoogleMaps from 'vue2-google-maps'
 // import firebase from 'firebase/app';
 import 'firebase/storage';
+import PerfectScrollbar from 'vue2-perfect-scrollbar'
+import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
+
+Vue.use(PerfectScrollbar)
 
 Vue.use(VeeValidate);
 

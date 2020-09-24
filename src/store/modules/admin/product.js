@@ -1,7 +1,6 @@
 import * as firebase from 'firebase'
 import { getField, updateField } from 'vuex-map-fields';
 import {productUrl,characteristicUrl,fileUrl,categoryUrl,statusProductUrl} from '../../../packages/config'
-import { async } from 'q';
 
 const strict = true
 const state = {
@@ -102,7 +101,6 @@ const mutations = {
             statusProduct_id : response.statusProduct_id,
             description : response.description,
             parent_id:0,
-            description:response.description
         }
     },
     fillCharacteristicByProductId(state,response){
@@ -331,7 +329,6 @@ const actions = {
     fillProductById(context,object){
         return new Promise((resolve, reject) => {
         // console.log('estoy en llenado de producto', object)
-            var auth = object.auth
             var id  = object.id
             this.$myApi.get(productUrl+'/'+id)
             .then(response=>{
@@ -340,28 +337,27 @@ const actions = {
             })
             .catch(error=>{
               // console.log(error)
+              reject(error)
             })
         })    
     },
     fillCharacteristicByProductId(context, object){
-        var auth = object.auth
         var id =  object.id
         this.$myApi.get(characteristicUrl+'/'+id)
         .then(response=>{
             context.commit('fillCharacteristicByProductId',response.data)
         })
-        .catch(error=>{
+        .catch(()=>{
           // console.log(error)
         })
     },
     fillFileByProductId(context, object){
-        var auth = object.auth
         var id =  object.id
         this.$myApi.get(fileUrl+'/'+id)
         .then(response=>{
             context.commit('fillFileByProductId',response.data)
         })
-        .catch(error=>{
+        .catch(()=>{
           // console.log(error)
         })
     },
@@ -383,7 +379,6 @@ const actions = {
     },
     //creando en la base de datos
     async CreateAndUpdateProductSubmit(context,object){
-        var auth = object.auth
         var method = object.method
         var id  = object.productId
         var url = productUrl
@@ -424,7 +419,7 @@ const actions = {
           //add image in farebase
 
     uploadImageFirebase(context,fileForInsert){
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             for (let index = 0; index < fileForInsert.length; index++) {
                 const element = fileForInsert[index];
                 const uuid = element.uuid ;
@@ -433,7 +428,7 @@ const actions = {
                 // console.log(state.files[index])
     
                 firebase.auth().signInWithEmailAndPassword(state.userFirebase,state.passFirebase)
-                .then(user => {
+                .then(() => {
                 var storageRef =  firebase.storage().ref();
                     var metadata = {
                     contentType: element.file[0].type
@@ -444,8 +439,6 @@ const actions = {
 
                     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, 
                     function(snapshot) {
-                        var progress =  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                      // console.log('['+index+']'+'Upload is ' + progress + '% done');
                         switch (snapshot.state) {
                         case firebase.storage.TaskState.PAUSED: 
                           // console.log('Upload is paused');
@@ -492,8 +485,7 @@ const actions = {
     },
 
     addingImageFirebase(context){
-        return new Promise((resolve, reject) => {
-            var countFile = state.files.length
+        return new Promise((resolve) => {
             var resultadoNew = state.files.filter( file => file.state === 'new' );
             if(resultadoNew.length>0){
                 context.dispatch('uploadImageFirebase',resultadoNew).then((response) => {
@@ -529,10 +521,8 @@ const actions = {
                 // }
             // }
     },
-    CreateAndUpdateCharacteristic(context,object){
+    CreateAndUpdateCharacteristic(context){
         try{
-        var auth = object.auth
-        var id  = object.productId
         var url = ''
             for (let index = 0; index < state.characteristics.length; index++) {
                 const element = state.characteristics[index];
@@ -555,24 +545,24 @@ const actions = {
                     })
                 }else {
                     url = characteristicUrl+'/'+element.id
-                    this.$myApi.delete(url).then(response=>{
+                    this.$myApi.delete(url)
+                    // .then(response=>{
                       // console.log('se elimino correctamente', response)
-                        let obj = {
-                            index : index,
-                            state :'delete'
-                        }
+                        // let obj = {
+                        //     index : index,
+                        //     state :'delete'
+                        // }
                         // context.commit('deleteCharacteristic',obj)
                       // console.log('caracteristica '+response.data.type+' con exito', response.data )
-                    })
+                    // })
                 }
             }
         }catch(ex){
           // console.log(ex)
         }
     },
-    createAndUpdateFileProduct(context,object){
+    createAndUpdateFileProduct(context){
         try{
-            var auth = object.auth
             var url = fileUrl
             for (let index = 0; index < state.files.length; index++) {
                 const element = state.files[index];
@@ -599,11 +589,10 @@ const actions = {
           // console.log(ex)
         }
     },
-    deleteImageFirebaseAndDataBase(context, object){
-        var auth = object.auth
+    deleteImageFirebaseAndDataBase(context){
         if(state.fileForDelete.length > 0){
             firebase.auth().signInWithEmailAndPassword(state.userFirebase,state.passFirebase)
-            .then(user => {
+            .then(() => {
             for (let index = 0; index < state.fileForDelete.length; index++) {
                 const element = state.fileForDelete[index];
                     var storage = firebase.storage();
@@ -611,10 +600,11 @@ const actions = {
                     var desertRef = storageRef.child('/products/'+element.name);
                     desertRef.delete().then(function() {
                       // console.log('se elimino correctamente de firebase su imagen')
-                    }).catch(function(error) {
+                    }).catch(() =>{
                     // Uh-oh, an error occurred!
                     });
-                    this.$myApi.delete(fileUrl+'/'+element.id).then(response =>{
+                    this.$myApi.delete(fileUrl+'/'+element.id)
+                    .then(() =>{
                       // console.log('imagen eliminada correctamente de la base de datos')
                     })
             }

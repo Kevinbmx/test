@@ -1,25 +1,22 @@
 <template>
-  <v-card class="primary"> 
-    <v-layout row wrap class="pb-2" >
-      <v-flex xs4 sm2 md2 order-xs1 order-sm1 order-md1>
-        <v-card-text class="text-md-center">
-          <router-link class="estiloTitulo" :to="{ name: 'mainPage' }"><span> Trovare</span></router-link>
-        </v-card-text>
-      </v-flex>
-      <v-flex xs12 sm7 md7 order-xs3 order-sm2 order-md2>
+  <v-card tile dark class="primary"> 
+    <v-row no-gutters class="py-2">
+      <v-col cols="4" sm="2" md="2"  align="center" justify="center" order="1" order-sm="1" order-md="1">
+        <router-link class="estiloTitulo" :to="{ name: 'mainPage' }"><span> Niño Tienda</span></router-link>
+      </v-col>
+      <v-col cols="12" xs="12" sm="6" md="7" order="3" order-sm="2" order-md="2">
         <v-text-field
-          class="mx-3 mt-2"
-          dark
-          label="Buscar"
-          prepend-inner-icon="search"
-          solo-inverted
-          v-model="searchField"
-          @keyup.enter="search"
-        ></v-text-field>
-      </v-flex>
-
-      <v-flex xs8 sm3 md3 order-xs2 order-sm3 order-md3>
-         <v-content class="text-xs-right text-md-center">
+        class="mx-3"
+          hide-details
+            dark
+            label="Buscar"
+            prepend-inner-icon="search"
+            solo-inverted
+            v-model="searchField"
+            @keyup.enter="search"
+          ></v-text-field>
+      </v-col>
+      <v-col cols="8" sm="4" md="3" order="2" order-sm="3" order-md="3">
         <v-bottom-navigation 
           background-color="primary"
           class="remove-shadow"
@@ -31,7 +28,7 @@
             <v-icon size="18">dashboard</v-icon>
           </v-btn>
           
-          <v-btn text @click="openMenuMain">
+          <v-btn text @click="openMenuMain()">
             <span>Mi Cuenta</span>
             <v-icon size="18">account_circle</v-icon>
           </v-btn>
@@ -40,9 +37,8 @@
             <v-icon size="18">shopping_cart</v-icon>
           </v-btn>
         </v-bottom-navigation>
-        </v-content >
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 <script>
@@ -60,10 +56,7 @@ export default {
       }
     },
     created(){
-      // if(this.$store.state.auth.token !==null){
-      // this.fillCategory()
       this.fillCarrito()
-      // }
     },
     methods:{
       fillCategory(){
@@ -92,8 +85,8 @@ export default {
         }
       },
       openMenuMain() {
-        // console.log(this.$parent.$parent)
-        this.$parent.$parent.openMenuMain();
+        // console.log(this)
+        this.$parent.$parent.$parent.openMenuMain();
       },
       fillCarrito(){
         var pedido_id = localStorage.getItem('pedido_id')

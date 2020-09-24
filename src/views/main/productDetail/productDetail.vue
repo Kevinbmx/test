@@ -80,7 +80,6 @@
                   no-data-text="no hay stock"
                   v-model="cantidadSelected"
                   :error="errorComboBox"
-                  outlined
                 ></v-select>
             
               </v-flex>
@@ -106,9 +105,7 @@
               <v-flex xs6 sm4 md2 lg2 pa-2 v-for="(product,index) in productRandom" :key="index">
                 <v-hover>
                   <v-card
-                  slot-scope="{ hover }"
-                  :class="`elevation-${hover ? 12 : 2}`"
-                  class="mx-auto eliminar-shadow"
+                   class="mx-auto eliminar-shadow"
                   >
                   <!-- {{product}} -->
                     <router-link :to="{ name: 'productDetail',params: { id: product.id } }" exact>
@@ -133,7 +130,7 @@
 </template>
 
 <script>
-import 'swiper/dist/css/swiper.css'
+import 'swiper/swiper-bundle.css';
 // import touch from '@/components/widgets/touchSpin/TouchSpin'
 import {ProductDetailUrl,productRandomUrl} from '@/packages/config'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
@@ -170,7 +167,6 @@ export default {
   created(){
     this.fillProductDetail(this.$route.params.id)
     this.fillProductRandom()
-    //  this.fetchData()
   },
   methods:{
     fillProductDetail($id){
@@ -186,19 +182,7 @@ export default {
         this.productRandom = response.data
       })
     },
-    fetchData () {
-      this.error = this.post = null
-      this.loading = true
-      // replace `getPost` with your data fetching util / API wrapper
-      getPost(this.$route.params.id, (err, post) => {
-        this.loading = false
-        if (err) {
-          this.error = err.toString()
-        } else {
-          this.post = post
-        }
-      })
-    },
+    
     fillComboBoxCantidad(cantidad){
       this.cantidad = []
       if(cantidad > 0 ){

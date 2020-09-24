@@ -94,7 +94,7 @@
               password: this.password,
               role_id:2
             })
-            .then(response => {
+            .then(() => {
               this.loading = false
               this.alertName = 'Registered Successfully!'
               this.alertType='success'
@@ -102,7 +102,7 @@
                 alertName: this.alertName , alertType:this.alertType , alert:true} })
               // this.$router.push({ name: 'login' })
             })
-            .catch(error => {
+            .catch(() => {
                 this.loading = false
             })
           }

@@ -4,7 +4,7 @@
       <v-app id="inspire" class="app">
         <app-drawer class="app--drawer"></app-drawer>
         <app-toolbar class="app--toolbar"></app-toolbar>
-        <v-content>
+        <v-main>
           <!-- Page Header -->
           <page-header v-if="$route.meta.breadcrumb"></page-header>
           <div class="page-wrapper">
@@ -12,7 +12,7 @@
           </div>   
           <!-- App Footer -->
           <footers></footers>
-        </v-content>
+        </v-main>
         <!-- Go to top -->
         <app-fab></app-fab>
         <!-- theme setting -->
@@ -54,7 +54,7 @@ import AppFab from '@/components/admin_client/layout/AppFab';
 import PageHeader from '@/components/admin_client/layout/PageHeader';
 import MenuMain from '@/components/main/MenuMain';
 import Footers from '@/components/admin_client/layout/Footers';
-import AppEvents from  '@/event';
+// import AppEvents from  '@/event';
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import './index'
 import toolbar from '@/components/main/Toolbar';
@@ -80,9 +80,9 @@ export default {
   }),
   created () {
     this.retrieveAcceso()
-    AppEvents.forEach(item => {
-      this.$on(item.name, item.callback);
-    });
+    // AppEvents.forEach(item => {
+    //   this.$on(item.name, item.callback);
+    // });
     window.getApp = this;
   },
   methods: {
@@ -99,11 +99,8 @@ export default {
       this.$store.dispatch('retrieveAcceso')
     }
   },
-
 };
 </script>
-
-
 <style lang="stylus" scoped>
 
   .setting-fab 

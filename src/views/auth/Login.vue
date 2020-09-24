@@ -1,6 +1,6 @@
 <template>
   <v-app id="login" class="primary">
-    <v-content>
+    <v-main>
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4 lg4>
@@ -51,13 +51,13 @@
                 <v-btn block color="primary"  @click="login" :loading="loading">Login</v-btn>
               </v-card-actions>
               <div class="text-xs-center">
-                <v-btn flat small :to="{name:'register'}">Register</v-btn>
+                <v-btn text small :to="{name:'register'}">Register</v-btn>
               </div>
             </v-card>
           </v-flex>
         </v-layout>
       </v-container>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
@@ -98,7 +98,7 @@ export default {
               location.reload();
             }
           })
-          .catch(error =>{
+          .catch(() =>{
            this.$props.alert = true
             this.loading = false
             // console.log('errorssss',error)

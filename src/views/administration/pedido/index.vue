@@ -132,7 +132,7 @@ import { mapGetters } from 'vuex'
             ]),
         },
        watch: { 
-            $route (to, from) {
+            $route () {
                 this.initializeData()
                 this.getAllPedido()
             }
@@ -197,7 +197,7 @@ import { mapGetters } from 'vuex'
                 this.Pedido_id = id;
                 this.dialog = true;
             },
-            closeDialog(id){
+            closeDialog(){
                 this.Pedido_id ='';
                 this.dialog = false;
             },

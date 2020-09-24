@@ -63,7 +63,7 @@ export default {
     },
     abrirPopupError(title,text,icon){
       //  this.$parent.abrirPopupError();
-      Swal.fire(title, text, icon);
+      this.Swal.fire(title, text, icon);
         // .then((value) => {
         //    this.stateOdCorrect()
         // });
