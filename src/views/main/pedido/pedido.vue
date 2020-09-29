@@ -1,81 +1,51 @@
 <template>
     <v-container grid-list-xl >
-        <v-layout wrap justify-space-between pa-3 >
-            <h2>Tus pedidos</h2>
-        </v-layout>
-        <div v-if="this.pedido.length > 0">
-        <div style="border: 1px solid rgba(0,0,0,0.12); margin-bottom: 24px;" v-for="(order,index) in this.pedido" :key="index">
-            <v-layout wrap justify-space-between  style="background-color: rgba(0,0,0,0.12); margin:0px">
-                <v-flex xs8 md2 sm2 >
-                    FECHA PEDIDO 
-                    <br>
-                    {{order.created_at}}
-                    <!-- 10 de diciembre de 2019 -->
-                </v-flex>
-                <v-flex xs4 md1 sm1 >
-                    TOTAL
-                    <br>
-                    {{order.total}}
-                    <!-- 1200.00 Bs. -->
-                </v-flex>
-                 <v-flex xs12 md5 sm5 >
-                    ENVIAR
-                    <br>
-                    {{order.direction.direction}}
-                    <!-- 1200.00 Bs. -->
-                </v-flex>
-                <v-flex xs6 md2 sm2 >
-                    ESTADO
-                    <p>{{order.estado}} </p>
-                </v-flex>
-                <v-flex xs6 md2 sm2 >
-                    PEDIDO N° {{order.id}} 
-                    <v-btn
-                    v-if="order.estado=='confirmado'"
-                    small
-                    flat 
-                    round
-                    color="red"
-                    dark
-                    @click="openDialog(order.id)"
-                    >
-                    cancelar pedido
-                    </v-btn>
-
-    <v-dialog v-model="dialog" persistent max-width="400px">
-
-      <v-card>
-        <v-card-title>
-          <span class="headline">Anular Pedido</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 sm12 md12>
-                <v-textarea :maxlength="maxLengthTextArea"
-                    v-validate="'required'"
-                     name="motivoAnulacion" 
-                    :error-messages="errors.collect('motivoAnulacion '+(index+1))"
-                    v-model="motivoAnulacion" label="Motivo de anulacion de Pedido" required>
-                </v-textarea>
-                <label>{{maxLengthTextArea-motivoAnulacion.length}}</label>
-              </v-flex>
-             
-            </v-layout>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="closeDialog()">cerrar</v-btn>
-          <v-btn color="red" flat @click="motivoAnularPedido()">confirmar</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-                </v-flex>
-            </v-layout>
-            <div v-for="(cart,index) in order.carrito" :key="index">
-                <v-layout wrap justify-space-between pt-3>
-                    <v-flex xs12 md2 sm2 >
+        <v-row no-gutters>
+            <v-col>
+                <h2>Tus pedidos</h2>
+            </v-col>
+        </v-row>
+        <v-row no-gutters  v-if="this.pedido.length > 0">
+            <v-col cols="12" v-for="(order,index) in this.pedido" :key="index" style="border: 1px solid rgba(0,0,0,0.12); margin-bottom: 24px; padding:0px">
+                 <v-row style="background-color: rgba(0,0,0,0.12); margin:0px">
+                     <v-col cols="8" sm="2" md="2" >
+                          <span> FECHA PEDIDO:</span>
+                        <br>
+                        {{order.updated_at}}
+                    </v-col>
+                    <v-col cols="4" sm="1" md="1">
+                         <span>TOTAL:</span>
+                        <br>
+                        {{order.total}}
+                    </v-col>
+                    <v-col cols="12" sm="4" md="4" >
+                        <span>ENVIAR:</span>
+                        <br>
+                        {{order.direction.direction}}
+                    </v-col>
+                    <v-col cols="6" sm="2" md="2">
+                        <span>ESTADO:</span>
+                        <p>{{order.estado}} </p>
+                    </v-col>
+                    <v-col cols="6" sm="3" md="3" >
+                         <span>PEDIDO N°: {{order.id}}</span> 
+                         <br>
+                        <v-btn
+                        class="pa-0"
+                        v-if="order.estado=='confirmado'"
+                        small
+                        text 
+                        rounded
+                        color="red"
+                        dark
+                        @click="openDialog(order.id)"
+                        >
+                        Cancelar Pedido
+                        </v-btn>
+                    </v-col>
+                </v-row>
+                <v-row v-for="(cart,index) in order.carrito" :key="index" class="ma-1" >
+                    <v-col cols="12" sm="2" md="2">
                         <router-link :to="{ name: 'productDetail',params: { id: cart.product.id }}">
                             <v-img
                             :src= cart.product.file[0].path
@@ -84,42 +54,64 @@
                             >
                             </v-img>
                         </router-link>
-                    </v-flex>
-                    <v-flex xs12 md5 sm5 >
-                            <v-flex md12 xs12 py-0 > 
-                                <router-link :to="{ name: 'productDetail',params: { id: cart.product_id } }">
-                                    <h3 class="text-justify">{{cart.product.name}}</h3>
-                                </router-link>
-                            </v-flex>
-                    </v-flex>
-                    <v-flex xs12 md3 sm3 style="display:flex; color: #D90000;" >
-                        <v-flex md12 xs12 py-0 > 
-                            <h3>{{cart.product.price | moneda }}</h3> <p class="margin-price"> &nbsp; Bs.</p>
-                        </v-flex>
-                    </v-flex>
-                </v-layout>
-                <v-divider ></v-divider>
-            </div>
-        </div>
-        <div class="pagination">
-            <v-btn class="ma-2" 
-                :to="{ name: 'pedido',query: { page: paginador.prev_page_url } }" 
-                outline color="secondary"  exact
-                :disabled="!paginador.prev_page_url">
-                    anterior
-            </v-btn> 
-            <span>Pagina {{paginador.current_page}} de {{paginador.last_page}}</span>
-            <v-btn class="ma-2" 
-                :to="{ name: 'pedido',query: { page: paginador.next_page_url }}" 
-                outline color="secondary"  exact
-                :disabled="!paginador.next_page_url">
-                    siguiente
-            </v-btn>
-        </div>
-        </div>
-        <div v-else>
-            No tienes ningun pedido echo.
-        </div>
+                    </v-col>
+                    <v-col cols="12" sm="7" md="7" >
+                        <router-link :to="{ name: 'productDetail',params: { id: cart.product_id } }">
+                            <h4 class="text-justify">{{cart.product.name}}</h4>
+                        </router-link>
+                    </v-col>
+                    <v-col cols="12" sm="3" md="3" style="display:flex; color: #D90000; " >
+                        <h4>{{cart.product.price | moneda }} Bs.</h4>
+                    </v-col>
+                </v-row>
+            </v-col>
+            <v-col cols="12" sm="12" md="12">
+                <div>
+                    <v-btn class="ma-2" 
+                        :to="{ name: 'pedido',query: { page: paginador.prev_page_url } }" 
+                        outlined color="secondary"  exact
+                        :disabled="!paginador.prev_page_url">
+                            anterior
+                    </v-btn> 
+                    <span>Pagina {{paginador.current_page}} de {{paginador.last_page}}</span>
+                    <v-btn class="ma-2" 
+                        :to="{ name: 'pedido',query: { page: paginador.next_page_url }}" 
+                        outlined color="secondary"  exact
+                        :disabled="!paginador.next_page_url">
+                            siguiente
+                    </v-btn>
+                </div>
+            </v-col>
+        </v-row>
+        
+        <v-row no-gutters v-else>
+            <v-col>
+                No tienes ningun pedido echo.
+            </v-col>
+        </v-row>
+        <v-dialog v-model="dialog" persistent max-width="400px">
+            <v-card>
+                <v-card-title>
+                <span class="headline">Anular Pedido</span>
+                </v-card-title>
+                <v-card-text>
+                <v-container grid-list-md>
+                    <v-textarea 
+                        v-validate="'required'"
+                        name="motivoAnulacion" 
+                        :error-messages="errors.collect('motivoAnulacion')"
+                        v-model="motivoAnulacion" label="Motivo de anulacion de Pedido"
+                         maxlength="130" counter required>
+                    </v-textarea>
+                </v-container>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="closeDialog()">cerrar</v-btn>
+                    <v-btn color="red" text @click="motivoAnularPedido()">confirmar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 

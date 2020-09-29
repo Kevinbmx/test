@@ -1,28 +1,31 @@
 <template>
-<div>
-    <div v-if="this.$store.state.carrito.carrito.length > 0">
-        <v-flex xs12 md12 sm12>
-            <v-layout wrap justify-space-between>
-                <v-flex md2 sm2 > 
-                    productos
-                </v-flex>
-                <v-flex md3 sm3 offset-md7> 
-                    precio
-                </v-flex>
-            </v-layout>
-        </v-flex>
-        <v-divider ></v-divider>
-        <div v-for="(cart,index) in this.$store.state.carrito.carrito" :key="index">
-            <v-layout wrap justify-space-between pt-3>
-                <v-flex md12 sm12 xs12 class="align-rigth" > 
-                    <v-tooltip color="red" left>
-                        <v-btn flat small icon slot="activator" @click="eliminarItem(cart)" color="pink">
-                            <v-icon>clear</v-icon>
-                        </v-btn>
+    <div>
+        <div v-if="this.$store.state.carrito.carrito.length > 0">
+            <v-row no-gutters>
+                <v-col cols="2"  md="2" sm="2" >
+                      productos
+                </v-col>
+                <v-spacer></v-spacer>
+                   <v-col cols="6" sm="3" md="3" offset-md="4">
+                        precio
+                </v-col>
+            </v-row>
+            <v-divider ></v-divider>
+            <v-row no-gutters v-for="(cart,index) in this.$store.state.carrito.carrito" :key="index" class="align-center pt-3">
+                <v-col cols="12"  md="12" sm="12" class="align-rigth" >
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn small icon v-bind="attrs"
+                                v-on="on" @click="eliminarItem(cart)" color="pink">
+                                <v-icon  color="pink">
+                                clear
+                                </v-icon>
+                            </v-btn>
+                        </template>
                         <span>eliminar</span>
                     </v-tooltip>
-                </v-flex>
-                <v-flex xs12 md2 sm2 >
+                </v-col>
+                <v-col cols="12"  md="2" sm="2">
                     <router-link :to="{ name: 'productDetail',params: { id: cart.product.id }}">
                         <v-img
                         :src= cart.product.file[0].path
@@ -31,70 +34,71 @@
                         >
                         </v-img>
                     </router-link>
-                </v-flex>
-                <v-flex xs12 md5 sm5 >
-                        <v-flex md12 xs12 pa-0 > 
+                </v-col>
+                <v-col cols="12" md="7" sm="7">
+                    <v-row>
+                        <v-col cols="12"  md="12" class="d-flex justify-center" >
                             <router-link :to="{ name: 'productDetail',params: { id: cart.product_id } }">
                                 <h3 class="text-justify">{{cart.product.name}}</h3>
-                            </router-link>
-                        </v-flex>
-                        <v-flex md12 xs12 pa-0  > 
-                            <v-layout wrap class="align-center">
-                                <v-flex md2 xs3 sm2>
-                                    <v-tooltip color="red" bottom>
-                                        <v-btn flat small icon slot="activator"  color="red" @click="changeQuantityCarrito(cart,'restar')">
-                                            <v-icon>remove</v-icon>
-                                        </v-btn>
-                                        <span>disminuir</span>
-                                    </v-tooltip>
-                                </v-flex>
-                                <v-flex md2 xs6 sm1>
-                                    <p>{{cart.quantity}}</p>
-                                    <!-- <v-text-field
-                                        :disabled = true
-                                        v-model="cart.quantity"
-                                        label="cantidad"
-                                    >
-                                    </v-text-field> -->
-                                </v-flex>
-                                <v-flex md2 xs3 sm2>
-                                    <v-tooltip color="primary" bottom>
-                                        <v-btn flat small icon slot="activator" color="primary" @click="changeQuantityCarrito(cart,'sumar')">
-                                            <v-icon>add</v-icon>
-                                        </v-btn>
-                                        <span>aumentar</span>
-                                    </v-tooltip>
-                                </v-flex>
-                                <v-flex md2 xs12 sm2>
-                                    <!-- <v-btn flat >Eliminar</v-btn> -->
-                                </v-flex>
-                            </v-layout>
-                        </v-flex>
-                </v-flex>
-                <v-flex xs12 md3 sm3 style="display:flex; color: #D90000;" >
+                            </router-link>     
+                        </v-col>
+                    </v-row>
+                    <v-row class="d-flex justify-center">   
+                        <v-col cols="3"  md="2" sm="2" class="pa-0 ">
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn small icon v-bind="attrs"
+                                        v-on="on" @click="changeQuantityCarrito(cart,'restar')" color="red">
+                                        <v-icon color="red">
+                                        remove
+                                        </v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>disminuir</span>
+                            </v-tooltip>
+
+                        </v-col>
+                        <v-col cols="6"  md="2" sm="1" class="pa-0">
+                            <p>{{cart.quantity}}</p>
+                        </v-col>
+                        <v-col cols="3"  md="2" sm="2" class="pa-0">
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn small icon v-bind="attrs"
+                                        v-on="on" @click="changeQuantityCarrito(cart,'sumar')" color="primary">
+                                        <v-icon color="primary">
+                                        add
+                                        </v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>aumentar</span>
+                            </v-tooltip>
+                        </v-col>
+                    </v-row>
+                </v-col>
+                <v-col cols="12" md="3" sm="3" style="display:flex; color: #D90000;">
                     <h3>{{cart.product.price | moneda }}</h3> <p class="margin-price"> &nbsp; Bs.</p>
-                </v-flex>
-            </v-layout>
+                </v-col>
+            </v-row>
             <v-divider ></v-divider>
+            <v-row>
+                <v-col cols="12" style="display:flex; justify-content: flex-end;">
+                     <p>subtotal({{this.$store.getters.getCantidadCarrito +' productos'}}): &nbsp;</p> <span style="color: #D90000;">{{this.$store.getters.getSubtotalCarrito | moneda }} Bs.</span>
+                </v-col>
+                <v-col cols="12" class="align-rigth ">
+                    <v-btn  color="primary" @click="validate()">
+                        Siguiente
+                    </v-btn>
+                </v-col>
+            </v-row>
         </div>
-        
-        <v-flex xs12 md12 sm12 style="display:flex; justify-content: flex-end;">
-            <p>subtotal({{this.$store.getters.getCantidadCarrito +' productos'}}): &nbsp;</p> <span style="color: #D90000;">{{this.$store.getters.getSubtotalCarrito | moneda }} Bs.</span>
-        </v-flex>
-        
-        <div class="align-rigth">
-            <v-btn  color="primary" @click="validate()">
-                Siguiente
+        <div v-else>
+            Tu carrito est&aacute; vac&iacute;o
+            <v-btn :to="{ name: 'categories'}" color="primary" >
+                Ir a categorias
             </v-btn>
         </div>
     </div>
-    <div v-else>
-        Tu carrito est&aacute; vac&iacute;o
-        <v-btn :to="{ name: 'categories'}" color="primary" >
-            Ir a categorias
-        </v-btn>
-    </div>
-</div>
 </template>
 
 <script>
@@ -152,7 +156,6 @@ export default {
 <style  scoped>
     .align-rigth{
         text-align: right;
-        padding: 0px 5px !important;
     }
     .align-center{
         text-align: center;
@@ -160,5 +163,8 @@ export default {
     .margin-price{
         margin-bottom: 0px;
         margin-top: 3px;
+    }
+    p{
+        margin: 0px;
     }
 </style>

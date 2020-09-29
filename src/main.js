@@ -9,6 +9,7 @@ import VeeValidate from "vee-validate";
 // import * as firebase from 'firebase'
 import * as firebase from "firebase/app";
 // import VueAwesomeSwiper from 'vue-awesome-swiper'
+// import 'swiper/swiper-bundle.css'
 import api from '@/services/custom_axios'
 import "./filters/filters.js";
 import * as VueGoogleMaps from 'vue2-google-maps'
@@ -20,7 +21,7 @@ import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
 Vue.use(PerfectScrollbar)
 
 Vue.use(VeeValidate);
-
+// Vue.use(VueAwesomeSwiper)
 Vue.use(VueRouter)
 const router = new VueRouter({
   mode:'history',

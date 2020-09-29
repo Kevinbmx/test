@@ -1,6 +1,6 @@
 <template>
   <v-card tile dark class="primary"> 
-    <v-row no-gutters class="py-2">
+    <v-row no-gutters class="pt-2 pb-2">
       <v-col cols="4" sm="2" md="2"  align="center" justify="center" order="1" order-sm="1" order-md="1">
         <router-link class="estiloTitulo" :to="{ name: 'mainPage' }"><span> Niño Tienda</span></router-link>
       </v-col>
@@ -86,7 +86,7 @@ export default {
       },
       openMenuMain() {
         // console.log(this)
-        this.$parent.$parent.$parent.openMenuMain();
+        this.$parent.$parent.openMenuMain();
       },
       fillCarrito(){
         var pedido_id = localStorage.getItem('pedido_id')
@@ -178,7 +178,7 @@ export default {
 }
 </script>
 
-<style>
+<style  scoped>
   .v-text-field__details{
     display: none;
   }

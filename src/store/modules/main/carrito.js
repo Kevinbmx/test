@@ -5,11 +5,11 @@ const state = {
     pedido : null,
     carrito :[],
     new_direction:{
-        name:'kevin delgadillo salazar',
-        direction:'calle 24 de septiembre al frente de la policia 110',
-        latitud:-17.343550576389543,
-        longitud:-63.25430584547132,
-        phone_number:'75057204'
+        name:'',
+        direction:'',
+        latitud:'',
+        longitud:'',
+        phone_number:''
     },
     directions : [],
     hasDirection:false
@@ -43,8 +43,8 @@ const mutations = {
         }
     },
     selectCarritoByPedidoId(state, response){
-            // state.carrito = []
-            state.carrito = response
+        // state.carrito = []
+        state.carrito = response
     },
     createAndUpdateCarrito(state, response){
         state.carrito = response

@@ -39,7 +39,7 @@ import stepThreeCart from '@/views/main/cart/stepThreeCart'
 export default {
     data () {
         return {
-            stepper: 1,
+            stepper: 2,
             steps: [
                 {
                     label: 'Carrito',
