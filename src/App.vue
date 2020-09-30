@@ -101,12 +101,14 @@ export default {
   },
 };
 </script>
-<style lang="stylus" scoped>
-
-  .setting-fab 
-    top:50%!important; 
-    right:0;
-    border-radius:0  
-  .page-wrapper
-    min-height:calc(100vh - 64px - 50px - 81px );     
+<style scoped>
+ .setting-fab {
+  top: 50% !important;
+  right: 0;
+  border-radius: 0;
+}
+.page-wrapper {
+  min-height: calc(100vh - 64px - 50px - 81px);
+}
+  
 </style>

@@ -99,13 +99,13 @@ export default {
 </script>
 
 
-<style lang="stylus">
-// @import '../../node_modules/vuetify/src/stylus/settings/_elevations.styl';
-
-#appDrawer
-  overflow: hidden
-  .drawer-menu--scroll
-    height: calc(100vh - 48px)
-    overflow: auto
+<style>
+#appDrawer {
+  overflow: hidden;
+}
+#appDrawer .drawer-menu--scroll {
+  height: calc(100vh - 48px);
+  overflow: auto;
+}
 
 </style>
